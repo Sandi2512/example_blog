@@ -6,6 +6,10 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
   header ('Location: login.php');
 }
 
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+$stmt->bindParam(':id', $blogId, PDO::PARAM_INT);
+$stmt->execute();
+$result = $stmt->fetchAll();
 ?>
 
 <?php include('header.html');?>
@@ -16,7 +20,7 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Blog Listings</h3>
+                <h3 class="card-title">user Listings</h3>
               </div>
               <?php
              if(!empty($_GET['pageno'])){
@@ -27,23 +31,23 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
              $numOFrecs= 5;
              $offset =($pageno - 1) * $numOFrecs;
               if(empty($_POST['search'])) {
-                $stmt= $pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
+                $stmt= $pdo->prepare("SELECT * FROM users ORDER BY id DESC");
                 $stmt->execute();
                 $rawResult=$stmt->fetchAll();
      $total_pages =ceil(count($rawResult) / $numOFrecs);
   
-                $stmt= $pdo->prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numOFrecs ");
+                $stmt= $pdo->prepare("SELECT * FROM users ORDER BY id DESC LIMIT $offset,$numOFrecs ");
                 $stmt->execute();
                 $result=$stmt->fetchAll();
               }else{
                 $searchKey =$_POST['search'];
-                $stmt=$pdo->prepare("SELECT * FROM posts  where title like '%$searchKey%' ORDER BY id DESC");
+                $stmt=$pdo->prepare("SELECT * FROM users  where title like '%$searchKey%' ORDER BY id DESC");
                 $stmt->execute();
                 $rawResult=$stmt->fetchAll();
 
                 $total_pages =ceil(count($rawResult) / $numOFrecs);
   
-                $stmt= $pdo->prepare("SELECT * FROM posts where title like '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOFrecs ");
+                $stmt= $pdo->prepare("SELECT * FROM users where title like '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOFrecs ");
                 $stmt->execute();
                 $result=$stmt->fetchAll();
 
@@ -56,13 +60,14 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
               ?>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="add.php" type="button" class="btn btn-success">New Blog Post</a>
+                <a href="user_add.php" type="button" class="btn btn-success">Create User</a><br><br>
                 <table class="table table-bordered">
                   <thead>                  
                     <tr>
                       <th style="width: 10px">#</th>
-                      <th>Title</th>
-                      <th>Contents</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
                       <th style="width: 40px">Actions</th>
                     </tr>
                   </thead>
@@ -73,9 +78,10 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
                      foreach($result as $value){?>
                       <tr>
                       <td><?php echo $i;?></td>
-                      <td><?php echo $value['title']?></td>
-                      <td><?php echo substr($value['content'],0,20)?></td>
-                  
+                      <td><?php echo $value['name']?></td>
+                      <td><?php echo $value['email']?></td>
+                      <td><?php echo $value['roll']?></td>
+                
                       </td>
                       <td>
                         <div class="btn-group">
