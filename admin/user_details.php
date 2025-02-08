@@ -2,14 +2,10 @@
 session_start();
 require '../config/config.php';
 
-if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
+if(empty($_SESSION['user'])&& empty($_SESSION['logged_in'])){
   header ('Location: login.php');
 }
 
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-$stmt->bindParam(':id', $blogId, PDO::PARAM_INT);
-$stmt->execute();
-$result = $stmt->fetchAll();
 ?>
 
 <?php include('header.html');?>
@@ -30,37 +26,37 @@ $result = $stmt->fetchAll();
              }
              $numOFrecs= 5;
              $offset =($pageno - 1) * $numOFrecs;
-              if(empty($_POST['search'])) {
-                $stmt= $pdo->prepare("SELECT * FROM users ORDER BY id DESC");
-                $stmt->execute();
-                $rawResult=$stmt->fetchAll();
-     $total_pages =ceil(count($rawResult) / $numOFrecs);
-  
-                $stmt= $pdo->prepare("SELECT * FROM users ORDER BY id DESC LIMIT $offset,$numOFrecs ");
-                $stmt->execute();
-                $result=$stmt->fetchAll();
-              }else{
-                $searchKey =$_POST['search'];
-                $stmt=$pdo->prepare("SELECT * FROM users  where title like '%$searchKey%' ORDER BY id DESC");
-                $stmt->execute();
-                $rawResult=$stmt->fetchAll();
+              
+             if(empty($_POST['search'])) {
+              $stmt= $pdo->prepare("SELECT * FROM users ORDER BY id DESC");
+              $stmt->execute();
+              $rawResult=$stmt->fetchAll();
+   $total_pages =ceil(count($rawResult) / $numOFrecs);
 
-                $total_pages =ceil(count($rawResult) / $numOFrecs);
-  
-                $stmt= $pdo->prepare("SELECT * FROM users where title like '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOFrecs ");
-                $stmt->execute();
-                $result=$stmt->fetchAll();
+              $stmt= $pdo->prepare("SELECT * FROM users ORDER BY id DESC LIMIT $offset,$numOFrecs ");
+              $stmt->execute();
+              $result=$stmt->fetchAll();
+            }else{
+              $searchKey =$_POST['search'];
+              $stmt=$pdo->prepare("SELECT * FROM users  where title like '%$searchKey%' ORDER BY id DESC");
+              $stmt->execute();
+              $rawResult=$stmt->fetchAll();
 
-           
+              $total_pages =ceil(count($rawResult) / $numOFrecs);
 
+              $stmt= $pdo->prepare("SELECT * FROM users where title like '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOFrecs ");
+              $stmt->execute();
+              $result=$stmt->fetchAll();
 
-              }
+            }
+
+              
               
 
               ?>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="user_add.php" type="button" class="btn btn-success">Create User</a><br><br>
+                <a href="user_add.php" type="button" class="btn btn-success">Create New User</a><br><br>
                 <table class="table table-bordered">
                   <thead>                  
                     <tr>
@@ -80,13 +76,13 @@ $result = $stmt->fetchAll();
                       <td><?php echo $i;?></td>
                       <td><?php echo $value['name']?></td>
                       <td><?php echo $value['email']?></td>
-                      <td><?php echo $value['roll']?></td>
-                
+                      <td><?php echo $value['role']?></td>
+                  
                       </td>
                       <td>
                         <div class="btn-group">
                           <div class="container">
-                            <a href="edit.php?id=<?php echo $value['id']?>" type="button" class="btn btn-warning">Edit</a>
+                            <a href="user_edit.php?id=<?php echo $value['id']?>" type="button" class="btn btn-warning">Edit</a>
                           </div>
                         <div class="container">
                           <a href="delete.php?id=<?php echo $value['id']?>" 

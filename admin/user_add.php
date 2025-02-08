@@ -1,4 +1,4 @@
-<?php
+ <?php
 session_start();
 require '../config/config.php';
 
@@ -19,7 +19,7 @@ if($_POST){
 
   $stmt->bindValue(':email',$email);
   $stmt->execute();
-  $user=$stmt->fetch(PDO:FETCH_ASSOC);
+  $user=$stmt->fetch(PDO::FETCH_ASSOC);
 
   if($user) {
     echo"<script>alert('Email duplicated')</script>";
@@ -29,8 +29,9 @@ if($_POST){
     array(':name'=>$name,'email'=>$email,':role'=>$role)
     );
     if($result){
-      echo"<script>alert('Successfully added');window.location.href='user_list.php';</script>";
+      echo"<script>alert('Successfully added');window.location.href='user_details.php';</script>";
     }
+  
   }
  
 }
@@ -44,7 +45,7 @@ if($_POST){
           <div class="col-md-6">
             <div class="card">
           <div class="card-body">
-          <form action="user_details.php" method="post">
+          <form action="user_add.php" method="post">
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" name="name" required>
@@ -76,4 +77,6 @@ if($_POST){
             </div>
           </div>
           <!-- /.col-md-6 -->
-        </div>
+        </div> 
+
+        
