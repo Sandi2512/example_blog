@@ -9,6 +9,7 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 if($_POST){
   $name =$_POST['name'];
   $email=$_POST['email'];
+  $password=$_POST['password'];
   if(empty($_POST['role'])){
     $role=0;
   }else{
@@ -24,9 +25,9 @@ if($_POST){
   if($user) {
     echo"<script>alert('Email duplicated')</script>";
   }else{
-    $stmt= $pdo->prepare("INSERT INTO users(name,email,role) VALUES (:name,:email,:role)");
+    $stmt= $pdo->prepare("INSERT INTO users(name,email,password,role) VALUES (:name,:email,:password,:role)");
     $result= $stmt->execute(
-    array(':name'=>$name,'email'=>$email,':role'=>$role)
+    array(':name'=>$name,'email'=>$email,':password'=>$password,':role'=>$role)
     );
     if($result){
       echo"<script>alert('Successfully added');window.location.href='user_details.php';</script>";
@@ -37,7 +38,7 @@ if($_POST){
 }
 ?>
 
-<?php include('header.html');?>
+<?php include('header.php');?>
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -54,6 +55,9 @@ if($_POST){
     <label for="email">Email</label>
     <input type="email" class="form-control" name="email" required>
   </div>
+  <div class="form-group">
+  <input type="password" name="password" class="form-control" placeholder="Password"><br>
+</div>
   <div class="form-group">
     <label for="vechicle3">Admin</label>
     <input type="checkbox"  name="role">

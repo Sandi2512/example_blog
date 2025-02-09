@@ -7,6 +7,17 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 }
 
 if($_POST){
+  if(empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image'])){
+    if(empty($_POST['title'])){
+      $titleError ='Title cannot be null';
+    }
+    if(empty($_POST['content'])){
+      $contentError ='Content cannot be null';
+    }
+    if(empty($_FILES['image'])){
+      $imageError ='Image cannot be null';
+    }
+  }else{
   $file='images/'.($_FILES['image'] ['name']);
   $imageType=pathinfo($file,PATHINFO_EXTENSION);
 
@@ -26,16 +37,15 @@ if($_POST){
     if ($result){
       echo "<script>alert('Successfully added');window.location.href='index.php';</script>";
     }
-  //   if ($stmt->rowCount() > 0) {
-  //     echo "<script>alert('Successfully added')</script>";
-  //  }
-    
+   }
   }
-
 }
+
+  
+
 ?>
 
-<?php include('header.html');?>
+<?php include('header.php');?>
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -45,16 +55,16 @@ if($_POST){
           <div class="card-body">
           <form action="add.php" method="post" enctype="multipart/form-data">
   <div class="form-group">
-    <label for="title">Title</label>
-    <input type="text" class="form-control" name="title" required>
+    <label for="title">Title</label><p style="color:red"><?php echo empty($titleError) ? '' :'*'. $titleError; ?></p>
+    <input type="text" class="form-control" name="title" >
   </div>
   <div class="form-group">
-    <label for="content">Content</label><br>
+    <label for="content">Content</label><p style="color:red"><?php echo empty($contentError) ? '' : '*'. $contentError; ?></p>
     <textarea class="form-control" name="content" rows="8"></textarea>
   </div>
   <div class="form-group">
-    <label for="image">Image</label><br>
-    <input type="file" name="image" required>
+    <label for="image">Image</label><p style="color:red"><?php echo empty($imagetError) ? '' : '*'. $imageError; ?></p><br>
+    <input type="file" name="image" >
   </div>
   <div class="form-group">
     <input type="submit" class="btn btn-success" value="Submit">

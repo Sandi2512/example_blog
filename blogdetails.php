@@ -125,6 +125,7 @@ if($_POST){
                   <div class="comment-text" style="margin-left:0px !important">
                   <?php
 // Display the author's name and comment content only if available
+
 if (!empty($auResult) && isset($auResult[0]['name'])) {
     echo '<span class="username">' . htmlspecialchars($auResult[0]['name']) . '</span>';
 } else {
@@ -154,6 +155,8 @@ if (!empty($cmResult) && isset($cmResult[0]['created_at']) && isset($cmResult[0]
                 
                 <!-- /.card-comment -->
               </div>
+
+              
               <!-- /.card-footer -->
               <div class="card-footer">
                 <form action=" " method="post">

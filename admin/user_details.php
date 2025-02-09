@@ -8,7 +8,7 @@ if(empty($_SESSION['user'])&& empty($_SESSION['logged_in'])){
 
 ?>
 
-<?php include('header.html');?>
+<?php include('header.php');?>
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -38,13 +38,13 @@ if(empty($_SESSION['user'])&& empty($_SESSION['logged_in'])){
               $result=$stmt->fetchAll();
             }else{
               $searchKey =$_POST['search'];
-              $stmt=$pdo->prepare("SELECT * FROM users  where title like '%$searchKey%' ORDER BY id DESC");
+              $stmt=$pdo->prepare("SELECT * FROM users  where id like '%$searchKey%' ORDER BY id DESC");
               $stmt->execute();
               $rawResult=$stmt->fetchAll();
 
               $total_pages =ceil(count($rawResult) / $numOFrecs);
 
-              $stmt= $pdo->prepare("SELECT * FROM users where title like '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOFrecs ");
+              $stmt= $pdo->prepare("SELECT * FROM users where id like '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOFrecs ");
               $stmt->execute();
               $result=$stmt->fetchAll();
 

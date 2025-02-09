@@ -8,7 +8,7 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 
 ?>
 
-<?php include('header.html');?>
+<?php include('header.php');?>
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -56,7 +56,7 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
               ?>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="add.php" type="button" class="btn btn-success">New Blog Post</a>
+                <a href="add.php" type="button" class="btn btn-success">New Blog Post</a><br><br>
                 <table class="table table-bordered">
                   <thead>                  
                     <tr>

@@ -32,10 +32,9 @@ if($_POST){
 }
 $stmt=$pdo->prepare("SELECT * FROM users WHERE id=".$_GET['id']);
 $stmt->execute();
-
 $result =$stmt->fetchAll();
 ?>
-<?php include('header.html');?>
+<?php include('header.php');?>
     <!-- Main content -->
    
     <div class="content">
@@ -61,7 +60,7 @@ $result =$stmt->fetchAll();
   </div>
   <div class="form-group">
     <input type="submit" class="btn btn-success" value="Submit">
-    <a href="index.php" class="btn btn-warning">Back</a>
+    <a href="user_details.php" class="btn btn-warning">Back</a>
   </div>
 </form>
 
